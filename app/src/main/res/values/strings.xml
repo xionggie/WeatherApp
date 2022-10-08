@@ -7,5 +7,14 @@
     <string name="current_high_temp">High 80°</string>
     <string name="current_humidity">Humidity 100%</string>
     <string name="current_pressure">Pressure 1023 hPa</string>
+    <string name="forecast">Forecast</string>
+    <string name="degree_temp">%d°</string>
+
+    <string name="day_forecast_date">Jan 31</string>
+    <string name="day_forecast_temp">Temp 72°</string>
+    <string name="day_forecast_high">High: 80°</string>
+    <string name="day_forecast_low">Low: 65°</string>
+    <string name="day_forecast_sunrise">Sunrise: 8:00am</string>
+    <string name="day_forecast_sunset">Sunset: 9:00pm</string>
 
 </resources>
