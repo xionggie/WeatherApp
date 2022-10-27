@@ -7,11 +7,8 @@ data class DayForecast(
     val forecastTemp: ForecastTemp,
     val pressure: Float,
     val humidity: Int,
-
-
     )
 data class ForecastTemp(
     val min: Float,
     val max: Float,
-
 )

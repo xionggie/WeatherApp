@@ -102,9 +102,11 @@ private fun CurrentConditionsContent(
     }
 }
 
+
 @Preview(
     showSystemUi = true
 )
+
 @Composable
 fun CurrentConditionsPreview(){
     CurrentConditions{}
