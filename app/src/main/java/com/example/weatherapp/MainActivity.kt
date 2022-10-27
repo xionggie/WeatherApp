@@ -21,6 +21,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
+
                 composable("Forecast") {
                     ForecastScreen()
                 }
