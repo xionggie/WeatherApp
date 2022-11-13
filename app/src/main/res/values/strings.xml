@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Xiong Weather App</string>
     <string name="city">St. Paul, MN</string>
-    <string name="current_temp">102°</string>-->
+<!--    <string name="current_temp">102°</string>&ndash;&gt;-->
     <string name="feels_like_temp">Feels Like %d°</string>
     <string name="humidity">Humidity: %d%%</string>
     <string name="pressure">Pressure: %dhPa</string>
@@ -10,4 +10,7 @@
     <string name="sunrise">Sunrise: %s</string>
     <string name="sunset">Sunset: %s</string>
     <string name="forecast">Forecast</string>
+
+    <string name="temperature">%s°</string>
+    <string name="get_weather_for_my_location">Get Weather for My Location</string>
 </resources>
