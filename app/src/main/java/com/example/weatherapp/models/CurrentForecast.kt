@@ -21,6 +21,5 @@ data class CurrentForecastTemp(
 )
 
 data class CurrentForecasts(
-    @Json(name ="weather") val forecastData: List<CurrentForecastsData>,
-//    @Json(name ="temp") val forecasts: CurrentForecastTemp,
+    @Json(name ="list") val forecastDataList: List<CurrentForecastsData>,
 )

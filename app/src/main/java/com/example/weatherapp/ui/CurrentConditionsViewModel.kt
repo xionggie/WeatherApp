@@ -2,6 +2,7 @@ package com.example.weatherapp.ui
 
 import androidx.lifecycle.ViewModel
 import com.example.weatherapp.models.CurrentConditions
+import com.example.weatherapp.models.LatitudeLongitude
 import com.example.weatherapp.service.OpenWeatherMapApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -17,12 +18,12 @@ class CurrentConditionsViewModel @Inject constructor(private val api: OpenWeathe
     public val currentConditions: Flow<CurrentConditions> = _currentConditions.receiveAsFlow()
 
     fun fetchData() = runBlocking {
-        val currentConditions = api.getCurrentCondition("55423") //Video 02:58:23
+        val currentConditions = api.getCurrentCondition("55423")
         _currentConditions.trySend(currentConditions)
     }
 
-    fun fetchCurrentLocationData() = runBlocking {
-        val currentConditions = api.getCurrentCondition("55423")
+    fun fetchCurrentLocationData(latitudeLongitude: LatitudeLongitude) = runBlocking {
+        val currentConditions = api.getCurrentConditions(latitudeLongitude.latitude, latitudeLongitude.longitude)
         _currentConditions.trySend(currentConditions)
     }
 }

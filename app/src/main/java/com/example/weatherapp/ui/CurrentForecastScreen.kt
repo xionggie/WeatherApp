@@ -9,6 +9,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,40 +26,43 @@ import com.example.weatherapp.R
 import com.example.weatherapp.models.*
 import com.example.weatherapp.toHourMinute
 import com.example.weatherapp.toMonthDay
-
-const val currentStartDay = 1668313474L
-const val currentSunrise = 1664971200L
-const val currentSunset = 1665014400L
-
-private val currentForecastsList = mutableListOf<CurrentForecastsData>()
-
-val currentForecastData = (0 until 16).map {
-    currentForecastsList.add( CurrentForecastsData(
-        date = currentStartDay + (it * (24 * 60 * 60)),
-        sunrise = currentSunrise + (it * (24 * 60 * 60)),
-        sunset = currentSunset + (it * (24 * 60 * 60)),
-        forecastTemp = CurrentForecastTemp(70f + it, 80f + it),
-        pressure = 1024f,
-        humidity = 76,
-    ))
-}
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CurrentForecastsScreen(
+    latitudeLongitude: LatitudeLongitude?,
     viewModel: CurrentForecastViewModel = hiltViewModel(),
 ){
+    val state by viewModel.currentForecast.collectAsState(initial = null)
+
+    if(latitudeLongitude != null) {
+        LaunchedEffect(Unit) {
+            viewModel.fetchForecastLocationData(latitudeLongitude)
+        }
+    } else {
+        LaunchedEffect(Unit) {
+            viewModel.fetchData()
+        }
+    }
+
     Scaffold(
         topBar = { Appbar (stringResource(id = R.string.forecast)) }
     ) {
-        LazyColumn (
-            modifier = Modifier.fillMaxSize().background(Color.White)
+        state?.let {
+            LazyColumn (
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
             ) {
-            items(
-                items = currentForecastsList,
-              ) { currentForecasts ->
-                CurrentForecastRow( currentForecasts = currentForecasts)
+                items(
+                items = it.forecastDataList
+                ) { currentForecasts ->
+                    CurrentForecastRow( currentForecasts = currentForecasts)
+                }
             }
+
         }
     }
 }
@@ -73,7 +79,7 @@ private fun CurrentForecastRow(currentForecasts: CurrentForecastsData) {
         Image(painter = painterResource(id = R.drawable.sun_icon), contentDescription = "")
         Spacer(modifier = Modifier.weight(1f, fill = true))
         Text(
-            text = currentForecasts.date.toMonthDay(),
+            text = currentForecasts.date.toLong().toMonthDay(),
             style = TextStyle(fontSize = 16.sp,)
         )
 
@@ -100,6 +106,11 @@ private fun CurrentForecastRow(currentForecasts: CurrentForecastsData) {
         }
     }
     Spacer(modifier = Modifier.padding(bottom = 5.dp))
+}
+
+private fun getCurrentDateTime(dayIncrement: Int): Long {
+    val now = LocalDateTime.now()
+    return now.plusDays(dayIncrement.toLong()).toEpochSecond(ZoneOffset.of("-5"))
 }
 
 @Preview(
