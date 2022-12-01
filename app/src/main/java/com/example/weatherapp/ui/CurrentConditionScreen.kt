@@ -19,21 +19,24 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.weatherapp.R
 import com.example.weatherapp.models.CurrentConditions
+import com.example.weatherapp.models.LatitudeLongitude
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CurrentConditions(
-    hasLocationPermission: Boolean,
+    latitudeLongitude: LatitudeLongitude?,
     viewModel: CurrentConditionsViewModel = hiltViewModel(),
     onGetWeatherForMyLocationClick:() -> Unit,
     onForecastButtonClick: () -> Unit,
 ) {
     val state by viewModel.currentConditions.collectAsState(initial = null)
 
-    LaunchedEffect(Unit) {
-        if(hasLocationPermission) {
-            viewModel.fetchCurrentLocationData()
-        } else {
+    if(latitudeLongitude != null) {
+        LaunchedEffect(Unit) {
+            viewModel.fetchCurrentLocationData(latitudeLongitude)
+        }
+    } else {
+        LaunchedEffect(Unit) {
             viewModel.fetchData()
         }
     }
@@ -61,7 +64,7 @@ private fun CurrentConditionsContent(
     ){
 
         Text(
-            text = stringResource(id = R.string.city),
+            text = currentConditions.cityName,
             style = TextStyle(
                 fontWeight = FontWeight(600),
                 fontSize = 24.sp
@@ -144,5 +147,4 @@ private fun CurrentConditionsContent(
 @Composable
 fun CurrentConditionsPreview() {
 //    CurrentConditions {}
-
 }
